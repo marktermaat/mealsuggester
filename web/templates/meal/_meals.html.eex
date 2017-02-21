@@ -1,0 +1,6 @@
+<%= for meal <- @meals do %>
+<div>
+    <p><%= meal.name %></p>
+    <p> <%= meal.latest %></p>
+</div>
+<%= end %>
