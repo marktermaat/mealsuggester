@@ -20,5 +20,12 @@ import "phoenix_html"
 
 import $ from "jquery"
 
-console.log($('body'))
-import socket from "./socket"
+import Channel from "./socket"
+import {MealForm} from "./mealform"
+
+export var App = {
+    init: () => {
+        const channel = new Channel()
+        MealForm.init(channel)
+    }
+}

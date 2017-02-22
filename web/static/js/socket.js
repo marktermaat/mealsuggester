@@ -6,7 +6,34 @@
 import {Socket} from "phoenix"
 import $ from "jquery"
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+export default class Channel {
+  constructor() {
+    this.socket = new Socket("/socket", {params: {token: window.userToken}})
+    this.socket.connect()
+
+    this.mealChannel = this.socket.channel("meals:1", {})
+    this.mealChannel.join()
+      .receive("ok", resp => {
+        console.log("Joined successfully", resp)
+      })
+      .receive("error", resp => {
+        console.log("Unable to join", resp)
+      })
+
+    this.mealChannel.on("html", payload => {
+      for( let key of Object.keys(payload) ) {
+        $(key).html(payload[key])
+      }
+    })
+  }
+
+  sendMessage(channel, message) {
+    console.log("Sending message")
+    this.mealChannel.push(channel, message)
+  }
+}
+
+
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -52,22 +79,3 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 // Finally, pass the token on connect as below. Or remove it
 // from connect if you don't care about authentication.
 
-socket.connect()
-
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("meals:1", {})
-channel.join()
-  .receive("ok", resp => {
-    console.log("Joined successfully", resp)
-  })
-  .receive("error", resp => { console.log("Unable to join", resp) })
-
-channel.on("html", payload => {
-  for( let key of Object.keys(payload) ) {
-    $(key).html(payload[key])
-  }
-})
-
-// channel.push("new_message", {})
-
-export default socket

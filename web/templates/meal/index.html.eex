@@ -1,4 +1,12 @@
 <h1>My meals</h1>
 
+<div class="new-meal">
+  <form id="newmealform">
+    <input type="text" name="name" placeholder="Meal">
+    <input type="text" name="latest" placeholder="When">
+    <input type="submit">
+  </form>
+</div>
+
 <div class="server-meals"></div>
 </div>

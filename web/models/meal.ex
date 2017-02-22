@@ -3,7 +3,7 @@ defmodule Mealplanner.Meal do
 
   schema "meals" do
     field :name, :string
-    field :latest, Ecto.Date
+    field :latest, Timex.Ecto.Date
 
     timestamps()
   end

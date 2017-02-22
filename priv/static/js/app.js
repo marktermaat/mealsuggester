@@ -11886,6 +11886,11 @@ window.addEventListener('click', function (event) {
 require.register("web/static/js/app.js", function(exports, require, module) {
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.App = undefined;
+
 require("phoenix_html");
 
 var _jquery = require("jquery");
@@ -11895,6 +11900,8 @@ var _jquery2 = _interopRequireDefault(_jquery);
 var _socket = require("./socket");
 
 var _socket2 = _interopRequireDefault(_socket);
+
+var _mealform = require("./mealform");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11911,12 +11918,46 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-console.log((0, _jquery2.default)('body'));
+var App = exports.App = {
+    init: function init() {
+        var channel = new _socket2.default();
+        _mealform.MealForm.init(channel);
+    }
+};
 
 // Import local files
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
+});
+
+;require.register("web/static/js/mealform.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MealForm = undefined;
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MealForm = exports.MealForm = {
+    init: function init(channel) {
+        (0, _jquery2.default)('#newmealform').submit(function (event) {
+            var data = (0, _jquery2.default)('#newmealform').serializeArray().reduce(function (acc, current) {
+                acc[current['name']] = current['value'];
+                return acc;
+            }, {});
+            channel.sendMessage("new_meal", data);
+            console.log("submit ", JSON.stringify(data));
+            event.preventDefault();
+        });
+    }
+};
 });
 
 ;require.register("web/static/js/socket.js", function(exports, require, module) {
@@ -11926,6 +11967,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // NOTE: The contents of this file will only be executed if
+// you uncomment its entry in "web/static/js/app.js".
+
+// To use Phoenix channels, the first step is to import Socket
+// and connect at the socket path in "lib/my_app/endpoint.ex":
+
+
 var _phoenix = require("phoenix");
 
 var _jquery = require("jquery");
@@ -11934,12 +11982,60 @@ var _jquery2 = _interopRequireDefault(_jquery);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// NOTE: The contents of this file will only be executed if
-// you uncomment its entry in "web/static/js/app.js".
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// To use Phoenix channels, the first step is to import Socket
-// and connect at the socket path in "lib/my_app/endpoint.ex":
-var socket = new _phoenix.Socket("/socket", { params: { token: window.userToken } });
+var Channel = function () {
+  function Channel() {
+    _classCallCheck(this, Channel);
+
+    this.socket = new _phoenix.Socket("/socket", { params: { token: window.userToken } });
+    this.socket.connect();
+
+    this.mealChannel = this.socket.channel("meals:1", {});
+    this.mealChannel.join().receive("ok", function (resp) {
+      console.log("Joined successfully", resp);
+    }).receive("error", function (resp) {
+      console.log("Unable to join", resp);
+    });
+
+    this.mealChannel.on("html", function (payload) {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = Object.keys(payload)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var key = _step.value;
+
+          (0, _jquery2.default)(key).html(payload[key]);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    });
+  }
+
+  _createClass(Channel, [{
+    key: "sendMessage",
+    value: function sendMessage(channel, message) {
+      console.log("Sending message");
+      this.mealChannel.push(channel, message);
+    }
+  }]);
+
+  return Channel;
+}();
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -11985,46 +12081,8 @@ var socket = new _phoenix.Socket("/socket", { params: { token: window.userToken 
 // Finally, pass the token on connect as below. Or remove it
 // from connect if you don't care about authentication.
 
-socket.connect();
 
-// Now that you are connected, you can join channels with a topic:
-var channel = socket.channel("meals:1", {});
-channel.join().receive("ok", function (resp) {
-  console.log("Joined successfully", resp);
-}).receive("error", function (resp) {
-  console.log("Unable to join", resp);
-});
-
-channel.on("html", function (payload) {
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = Object.keys(payload)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var key = _step.value;
-
-      (0, _jquery2.default)(key).html(payload[key]);
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-});
-
-// channel.push("new_message", {})
-
-exports.default = socket;
+exports.default = Channel;
 });
 
 ;require.alias("phoenix_html/priv/static/phoenix_html.js", "phoenix_html");
