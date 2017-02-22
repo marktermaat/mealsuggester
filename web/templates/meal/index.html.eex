@@ -1,5 +1,7 @@
 <h1>My meals</h1>
 
+<div class="server-alert"></div>
+
 <div class="new-meal">
   <form id="newmealform">
     <input type="text" name="name" placeholder="Meal">

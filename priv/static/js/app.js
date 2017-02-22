@@ -12007,6 +12007,7 @@ var Channel = function () {
         for (var _iterator = Object.keys(payload)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var key = _step.value;
 
+          console.log("Adding html", key, payload[key]);
           (0, _jquery2.default)(key).html(payload[key]);
         }
       } catch (err) {
@@ -12029,7 +12030,7 @@ var Channel = function () {
   _createClass(Channel, [{
     key: "sendMessage",
     value: function sendMessage(channel, message) {
-      console.log("Sending message");
+      console.log("Sending ", message);
       this.mealChannel.push(channel, message);
     }
   }]);
