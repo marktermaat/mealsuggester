@@ -1,6 +1,6 @@
 <%= for meal <- @meals do %>
-<div>
-    <p><%= meal.name %></p>
-    <p> <%= meal.latest %></p>
+<div class="js-meal">
+    <p class="js-mealname"><%= meal.name %></p>
+    <p class="js-mealdate"> <%= meal.latest %></p>
 </div>
 <%= end %>

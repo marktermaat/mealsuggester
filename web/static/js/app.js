@@ -22,11 +22,13 @@ import $ from "jquery"
 
 import Channel from "./socket"
 import {MealForm} from "./mealform"
+import {Meals} from "./meals"
 
 export var App = {
     init: () => {
         const channel = new Channel()
         MealForm.init(channel)
+        Meals.init()
     },
     clearForm: () => {
         MealForm.clearForm()
@@ -36,3 +38,4 @@ export var App = {
     }
 }
 window.App = App;
+window.$ = $

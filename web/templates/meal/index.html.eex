@@ -10,5 +10,5 @@
   </form>
 </div>
 
-<div class="server-meals"></div>
+<div class="server-meals js-meals"></div>
 </div>
