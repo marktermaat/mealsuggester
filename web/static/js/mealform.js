@@ -2,8 +2,8 @@ import $ from "jquery"
 
 export var MealForm = {
     init: (channel) => {
-        $('#newmealform').submit((event) => {
-            const data = $('#newmealform').serializeArray().reduce( (acc, current) => {
+        $('.js-newmealform').submit((event) => {
+            const data = $('.js-newmealform').serializeArray().reduce( (acc, current) => {
                 acc[current['name']] = current['value']
                 return acc
             }, {})
@@ -14,12 +14,12 @@ export var MealForm = {
     },
 
     clearForm: () => {
-        $('#newmealform')[0].reset();
+        $('.js-newmealform')[0].reset();
     },
 
     showErrors: (errors) => {
         for (var name in errors) {
-            $("#newmealform input[name='" + name + "']").css("border-color", "red")
+            $(".js-newmealform input[name='" + name + "']").css("border-color", "red")
         }
     }
 }

@@ -2,6 +2,7 @@
 /cover
 /deps
 /node_modules
+/priv/static
 
 erl_crash.dump
 *.ez

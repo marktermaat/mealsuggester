@@ -3,7 +3,7 @@
 <div class="server-alert"></div>
 
 <div class="new-meal">
-  <form id="newmealform">
+  <form class="js-newmealform">
     <input type="text" name="name" placeholder="Meal">
     <input type="text" name="latest" placeholder="When" value="<%= Date.to_string(Date.utc_today) %>">
     <input type="submit">

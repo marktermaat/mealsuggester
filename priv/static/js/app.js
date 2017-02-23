@@ -11955,8 +11955,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var MealForm = exports.MealForm = {
     init: function init(channel) {
-        (0, _jquery2.default)('#newmealform').submit(function (event) {
-            var data = (0, _jquery2.default)('#newmealform').serializeArray().reduce(function (acc, current) {
+        (0, _jquery2.default)('.js-newmealform').submit(function (event) {
+            var data = (0, _jquery2.default)('.js-newmealform').serializeArray().reduce(function (acc, current) {
                 acc[current['name']] = current['value'];
                 return acc;
             }, {});
@@ -11967,15 +11967,19 @@ var MealForm = exports.MealForm = {
     },
 
     clearForm: function clearForm() {
-        (0, _jquery2.default)('#newmealform')[0].reset();
+        (0, _jquery2.default)('.js-newmealform')[0].reset();
     },
 
     showErrors: function showErrors(errors) {
         for (var name in errors) {
-            (0, _jquery2.default)("#newmealform input[name='" + name + "']").css("border-color", "red");
+            (0, _jquery2.default)(".js-newmealform input[name='" + name + "']").css("border-color", "red");
         }
     }
 };
+});
+
+;require.register("web/static/js/meals.js", function(exports, require, module) {
+"use strict";
 });
 
 ;require.register("web/static/js/socket.js", function(exports, require, module) {
