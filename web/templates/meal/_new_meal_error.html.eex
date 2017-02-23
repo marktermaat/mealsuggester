@@ -1,0 +1,7 @@
+<div class="alert alert.success">
+    Error adding meal.
+</div>
+
+<script>
+    App.showNewMealErrors(<%= raw errors(@changeset) %>);
+</script>

@@ -11,5 +11,15 @@ export var MealForm = {
             console.log("submit ", JSON.stringify(data))
             event.preventDefault();
         });
+    },
+
+    clearForm: () => {
+        $('#newmealform')[0].reset();
+    },
+
+    showErrors: (errors) => {
+        for (var name in errors) {
+            $("#newmealform input[name='" + name + "']").css("border-color", "red")
+        }
     }
 }

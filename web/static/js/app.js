@@ -27,5 +27,12 @@ export var App = {
     init: () => {
         const channel = new Channel()
         MealForm.init(channel)
+    },
+    clearForm: () => {
+        MealForm.clearForm()
+    },
+    showNewMealErrors: (errors) => {
+        MealForm.showErrors(errors)
     }
 }
+window.App = App;

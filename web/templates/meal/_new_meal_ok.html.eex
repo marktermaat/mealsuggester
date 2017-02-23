@@ -1,3 +1,7 @@
 <div class="alert alert.success">
     New meal added successfully.
 </div>
+
+<script>
+    App.clearForm();
+</script>

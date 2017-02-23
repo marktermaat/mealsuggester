@@ -11922,6 +11922,12 @@ var App = exports.App = {
     init: function init() {
         var channel = new _socket2.default();
         _mealform.MealForm.init(channel);
+    },
+    clearForm: function clearForm() {
+        _mealform.MealForm.clearForm();
+    },
+    showNewMealErrors: function showNewMealErrors(errors) {
+        _mealform.MealForm.showErrors(errors);
     }
 };
 
@@ -11929,9 +11935,11 @@ var App = exports.App = {
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
+
+window.App = App;
 });
 
-;require.register("web/static/js/mealform.js", function(exports, require, module) {
+require.register("web/static/js/mealform.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11956,6 +11964,16 @@ var MealForm = exports.MealForm = {
             console.log("submit ", JSON.stringify(data));
             event.preventDefault();
         });
+    },
+
+    clearForm: function clearForm() {
+        (0, _jquery2.default)('#newmealform')[0].reset();
+    },
+
+    showErrors: function showErrors(errors) {
+        for (var name in errors) {
+            (0, _jquery2.default)("#newmealform input[name='" + name + "']").css("border-color", "red");
+        }
     }
 };
 });

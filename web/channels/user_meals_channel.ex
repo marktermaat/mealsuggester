@@ -11,16 +11,22 @@ defmodule Mealplanner.UserMealsChannel do
     end
 
     def handle_in( "new_meal", new_meal, socket ) do
-        case Repo.get_by(Meal, name: Map.fetch!(new_meal, "name")) do
+        result = case Repo.get_by(Meal, name: Map.fetch!(new_meal, "name")) do
             nil -> %Meal{}
             meal -> meal
         end
         |> Meal.changeset(new_meal)
         |> Repo.insert_or_update
-        send(self, :send_meals)
 
-        alert_partial = get_template( "_new_meal_ok.html" )
-        push socket, "html", %{".server-alert": alert_partial}
+        case result do
+            {:ok, struct} ->
+                send(self, :send_meals)
+                alert_partial = get_template( "_new_meal_ok.html" )
+                push socket, "html", %{".server-alert": alert_partial}
+            {:error, changeset} ->
+                alert_partial = get_template( "_new_meal_error.html", %{changeset: changeset} )
+                push socket, "html", %{".server-alert": alert_partial}
+        end
         {:noreply, socket}
     end
 
