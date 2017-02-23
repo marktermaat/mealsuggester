@@ -1,0 +1,9 @@
+Todo:
+
+- Tests!
+- Snooze-button
+- New meal suggestions
+- Meal filter
+- Better error handling
+- Styling
+  - Including alert screen that can be closed
