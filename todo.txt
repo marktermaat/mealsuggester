@@ -1,7 +1,5 @@
 Todo:
 
-- Tests!
-- Case insensitive
 - Snooze-button
 - New meal suggestions
 - Meal filter

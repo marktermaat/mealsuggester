@@ -69,6 +69,8 @@ defmodule Mealplanner.Web do
       import Ecto
       import Ecto.Query
       import Mealplanner.Gettext
+
+      alias Mealplanner.Meal
     end
   end
 

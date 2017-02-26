@@ -1,9 +1,6 @@
 defmodule Mealplanner.UserMealsChannel do
+    use Mealplanner.Web, :channel
     use Phoenix.Channel
-
-    import Ecto.Query
-    alias Mealplanner.Meal
-    alias Mealplanner.Repo
 
     def join( "meals:" <> _user_id, _message, socket ) do
         send(self(), :send_meals)
@@ -31,12 +28,14 @@ defmodule Mealplanner.UserMealsChannel do
         {:noreply, socket}
     end
 
+    # ============ Private helpers ========================
+
     defp get_template(name, data \\ %{}) do
         Phoenix.View.render_to_string Mealplanner.MealView, name, data
     end
 
     defp upsert_meal( new_meal ) do
-        case Repo.get_by(Meal, name: Map.fetch!(new_meal, "name")) do
+        case Repo.one(from m in Meal, where: ilike(m.name, ^Map.fetch!(new_meal, "name"))) do
             nil -> %Meal{}
             meal -> meal
         end

@@ -79,6 +79,13 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
             assert Repo.aggregate(Meal, :count, :id) == 2
             assert Repo.get_by(Meal, name: "Pasta").latest == Timex.today
         end
+
+        test "it updates an existing meal if the case if different", %{socket: socket} do
+            push socket, "new_meal", %{name: "pasta", latest: to_string(Timex.today)}
+            assert_push "html", %{".server-alert": _}
+            assert Repo.aggregate(Meal, :count, :id) == 2
+            assert Repo.get_by(Meal, name: "pasta").latest == Timex.today
+        end
     end
 
     defp create_meals do
