@@ -5,22 +5,15 @@ defmodule Mealplanner.UserMealsChannel do
     alias Mealplanner.Meal
     alias Mealplanner.Repo
 
-    def join( "meals:" <> user_id, _message, socket ) do
-        send(self, :send_meals)
+    def join( "meals:" <> _user_id, _message, socket ) do
+        send(self(), :send_meals)
         {:ok, socket}
     end
 
     def handle_in( "new_meal", new_meal, socket ) do
-        result = case Repo.get_by(Meal, name: Map.fetch!(new_meal, "name")) do
-            nil -> %Meal{}
-            meal -> meal
-        end
-        |> Meal.changeset(new_meal)
-        |> Repo.insert_or_update
-
-        case result do
-            {:ok, struct} ->
-                send(self, :send_meals)
+        case upsert_meal(new_meal) do
+            {:ok, _struct} ->
+                send(self(), :send_meals)
                 alert_partial = get_template( "_new_meal_ok.html" )
                 push socket, "html", %{".server-alert": alert_partial}
             {:error, changeset} ->
@@ -38,7 +31,16 @@ defmodule Mealplanner.UserMealsChannel do
         {:noreply, socket}
     end
 
-    def get_template(name, data \\ %{}) do
+    defp get_template(name, data \\ %{}) do
         Phoenix.View.render_to_string Mealplanner.MealView, name, data
+    end
+
+    defp upsert_meal( new_meal ) do
+        case Repo.get_by(Meal, name: Map.fetch!(new_meal, "name")) do
+            nil -> %Meal{}
+            meal -> meal
+        end
+        |> Meal.changeset(new_meal)
+        |> Repo.insert_or_update
     end
 end
