@@ -9,12 +9,28 @@ defmodule Mealplanner.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :with_session do
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+    plug Mealplanner.CurrentUser
+  end
+
+  pipeline :login_required do
+    plug Guardian.Plug.EnsureAuthenticated, handler: Mealplanner.GuardianErrorHandler
+  end
+
   scope "/", Mealplanner do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :with_session] # Use the default browser stack
+
+    resources "/sessions", SessionController, only: [:new, :create, :delete]
+  end
+  
+
+  scope "/", Mealplanner do
+    pipe_through [:browser, :with_session, :login_required] # Use the default browser stack
 
     get "/", MealController, :index
 
     resources "/users", UserController, only: [:new, :create]
-    resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 end
