@@ -13,5 +13,7 @@ defmodule Mealplanner.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/meals", MealController, :index
+
+    resources "/users", UserController, only: [:new, :create]
   end
 end

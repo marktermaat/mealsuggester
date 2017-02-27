@@ -1,5 +1,5 @@
 defmodule Mealplanner.MealTest do
-  use Mealplanner.ModelCase
+  use Mealplanner.ModelCase, async: true
 
   alias Mealplanner.Meal
 
