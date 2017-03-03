@@ -1,10 +1,24 @@
 defmodule Mealplanner.UserMealsChannel do
     use Mealplanner.Web, :channel
     use Phoenix.Channel
+    import Guardian.Phoenix.Socket
 
-    def join( "meals:" <> _user_id, _message, socket ) do
-        send(self(), :send_meals)
-        {:ok, socket}
+    def join( "meals", %{"guardian_token" => token}, socket ) do
+        case sign_in(socket, token) do
+            {:ok, _authed_socket, _guardian_params} ->
+                send(self(), :send_meals)
+                {:ok, socket}
+            {:error, reason} ->
+                {:error, reason}
+        end
+    end
+
+    def join(_room, %{"guardian_token" => token}, _socket) do
+        {:error,  :unknown_channel}
+    end
+
+    def join(_room, _, _socket) do
+        {:error,  :authentication_required}
     end
 
     def handle_in( "new_meal", new_meal, socket ) do

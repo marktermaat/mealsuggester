@@ -11,7 +11,8 @@ export default class Channel {
     this.socket = new Socket("/socket", {params: {token: window.userToken}})
     this.socket.connect()
 
-    this.mealChannel = this.socket.channel("meals:1", {})
+    const guardianToken = $('meta[name="guardian_token"]').attr('content');
+    this.mealChannel = this.socket.channel("meals:1", { guardian_token: guardianToken })
     this.mealChannel.join()
       .receive("ok", resp => {
         console.log("Joined successfully", resp)

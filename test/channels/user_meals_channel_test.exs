@@ -7,23 +7,36 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
 
     describe "join channel" do
         setup do
-            socket = socket()
-            {:ok, socket: socket}
+            socket = socket("authd_socket", %{})
+            token = user_token()
+            {:ok, socket: socket, token: token}
         end
 
-        test "returns ok", %{socket: socket} do
-            {:ok, _reply, _socket} = subscribe_and_join(socket, UserMealsChannel, "meals:1")
+        test "returns ok", %{socket: socket, token: token} do
+            {:ok, _reply, _socket} = subscribe_and_join(socket, UserMealsChannel, "meals", %{"guardian_token" => "#{token}"})
         end
 
-        test "sends html with data for meals", %{socket: socket} do
-            subscribe_and_join(socket, UserMealsChannel, "meals:1")
+        test "returns error with incorrect token", %{socket: socket} do
+            {:error, _reply} = subscribe_and_join(socket, UserMealsChannel, "meals", %{"guardian_token" => "wrong!"})
+        end
+
+        test "returns error without token", %{socket: socket} do
+            {:error, :authentication_required} = subscribe_and_join(socket, UserMealsChannel, "meals")
+        end
+
+        test "returns errro with incorrect channel", %{socket: socket, token: token} do
+            {:error, :unknown_channel} = subscribe_and_join(socket, UserMealsChannel, "incorrectchannel", %{"guardian_token" => "#{token}"})
+        end
+
+        test "sends html with data for meals", %{socket: socket, token: token} do
+            subscribe_and_join(socket, UserMealsChannel, "meals", %{"guardian_token" => "#{token}"})
             assert_push "html", %{".server-meals": _}
         end
 
-        test "sends correct meals", %{socket: socket} do
+        test "sends correct meals", %{socket: socket, token: token} do
             create_meals()
 
-            subscribe_and_join(socket, UserMealsChannel, "meals:1")
+            subscribe_and_join(socket, UserMealsChannel, "meals", %{"guardian_token" => "#{token}"})
             assert_push "html", %{".server-meals": data}
             assert data =~ "Pasta"
             assert data =~ "Rice"
@@ -33,8 +46,7 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
     describe "new_meal" do
         setup do
             create_meals()
-            {:ok, _, socket} = socket()
-                |> subscribe_and_join(UserMealsChannel, "meals:1")
+            socket = authorized_channel("meals")
             assert_push "html", %{".server-meals": _}
 
             {:ok, socket: socket}
