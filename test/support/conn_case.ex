@@ -25,10 +25,26 @@ defmodule Mealplanner.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
+      alias Mealplanner.User
+
       import Mealplanner.Router.Helpers
 
       # The default endpoint for testing
       @endpoint Mealplanner.Endpoint
+
+      @secret String.duplicate("abcdef0123456789", 8)
+      @signing_opts Plug.Session.init([{:encrypt, false}, {:store, :cookie}, {:key, "mykey"}, {:signing_salt, "salt"}])
+
+      # We need a way to get into the connection to login a user
+      # We need to use the bypass_through to fire the plugs in the router
+      # and get the session fetched.
+      def guardian_login(conn, user, token \\ :token, perms \\ %{default: Guardian.Permissions.max}) do
+        conn = put_in(conn.secret_key_base, @secret)
+          |> Plug.Session.call(@signing_opts)
+          |> Plug.Conn.fetch_session
+          |> Guardian.Plug.sign_in(user, token, perms: perms)
+          |> Guardian.Plug.VerifySession.call(%{})
+      end
     end
   end
 

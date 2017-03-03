@@ -23,14 +23,16 @@ defmodule Mealplanner.Router do
     pipe_through [:browser, :with_session] # Use the default browser stack
 
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/users", UserController, only: [:new, :create]
   end
-  
 
+  # Restricted zone
   scope "/", Mealplanner do
     pipe_through [:browser, :with_session, :login_required] # Use the default browser stack
 
     get "/", MealController, :index
-
-    resources "/users", UserController, only: [:new, :create]
   end
+  
+
+  
 end

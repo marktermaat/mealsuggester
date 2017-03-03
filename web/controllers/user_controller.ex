@@ -14,7 +14,7 @@ defmodule Mealplanner.UserController do
         changeset = User.registration_changeset(%User{}, user_params)
         
         case Repo.insert(changeset) do
-            {:ok, user} ->
+            {:ok, _user} ->
                 redirect(conn, to: meal_path(conn, :index))
             {:error, changeset} ->
                 render(conn, "new.html", changeset: changeset)
