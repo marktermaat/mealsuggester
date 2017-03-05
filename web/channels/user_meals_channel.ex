@@ -3,26 +3,26 @@ defmodule Mealplanner.UserMealsChannel do
     use Phoenix.Channel
     import Guardian.Phoenix.Socket
 
-    def join( "meals", %{"guardian_token" => token}, socket ) do
-        case sign_in(socket, token) do
-            {:ok, _authed_socket, _guardian_params} ->
-                send(self(), :send_meals)
-                {:ok, socket}
-            {:error, reason} ->
-                {:error, reason}
-        end
+    def join( "meals", _params, socket ) do
+        send(self(), :send_meals)
+        {:ok, socket}
+
+        # case sign_in(socket, token) do
+        #     {:ok, authed_socket, _guardian_params} ->
+        #         send(self(), :send_meals)
+        #         {:ok, authed_socket}
+        #     {:error, reason} ->
+        #         {:error, reason}
+        # end
     end
 
-    def join(_room, %{"guardian_token" => token}, _socket) do
+    def join(_room, _params, _socket) do
         {:error,  :unknown_channel}
     end
 
-    def join(_room, _, _socket) do
-        {:error,  :authentication_required}
-    end
-
     def handle_in( "new_meal", new_meal, socket ) do
-        case upsert_meal(new_meal) do
+        user = current_resource(socket)
+        case upsert_meal(new_meal, user) do
             {:ok, _struct} ->
                 send(self(), :send_meals)
                 alert_partial = get_template( "_new_meal_ok.html" )
@@ -35,7 +35,8 @@ defmodule Mealplanner.UserMealsChannel do
     end
 
     def handle_info( :send_meals, socket ) do
-        all_meals_query = from m in Meal, order_by: [asc: m.latest]
+        user = current_resource(socket)
+        all_meals_query = from m in Meal, where: m.user_id == ^user.id, order_by: [asc: m.latest]
         meals = Repo.all(all_meals_query)
         mealsPartial = get_template( "_meals.html", %{meals: meals} )
         push socket, "html", %{".server-meals": mealsPartial}
@@ -48,9 +49,9 @@ defmodule Mealplanner.UserMealsChannel do
         Phoenix.View.render_to_string Mealplanner.MealView, name, data
     end
 
-    defp upsert_meal( new_meal ) do
-        case Repo.one(from m in Meal, where: ilike(m.name, ^Map.fetch!(new_meal, "name"))) do
-            nil -> %Meal{}
+    defp upsert_meal( new_meal, user ) do
+        case Repo.one(from m in Meal, where: m.user_id == ^user.id and ilike(m.name, ^Map.fetch!(new_meal, "name"))) do
+            nil -> %Meal{user_id: user.id}
             meal -> meal
         end
         |> Meal.changeset(new_meal)

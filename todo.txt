@@ -1,5 +1,5 @@
 Todo:
-
+- Link meals to user
 - Snooze-button
 - New meal suggestions
 - Meal filter

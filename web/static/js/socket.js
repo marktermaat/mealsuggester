@@ -3,36 +3,37 @@
 
 // To use Phoenix channels, the first step is to import Socket
 // and connect at the socket path in "lib/my_app/endpoint.ex":
-import {Socket} from "phoenix"
+import { Socket } from "phoenix"
 import $ from "jquery"
 
 export default class Channel {
-  constructor() {
-    this.socket = new Socket("/socket", {params: {token: window.userToken}})
-    this.socket.connect()
+    constructor() {
+        const guardianToken = $('meta[name="guardian_token"]').attr('content');
+        this.socket = new Socket("/socket", { params: { token: window.userToken, guardian_token: guardianToken } })
+        this.socket.connect()
 
-    const guardianToken = $('meta[name="guardian_token"]').attr('content');
-    this.mealChannel = this.socket.channel("meals:1", { guardian_token: guardianToken })
-    this.mealChannel.join()
-      .receive("ok", resp => {
-        console.log("Joined successfully", resp)
-      })
-      .receive("error", resp => {
-        console.log("Unable to join", resp)
-      })
 
-    this.mealChannel.on("html", payload => {
-      for( let key of Object.keys(payload) ) {
-        console.log("Adding html", key, payload[key])
-        $(key).html(payload[key])
-      }
-    })
-  }
+        this.mealChannel = this.socket.channel("meals", {})
+        this.mealChannel.join()
+            .receive("ok", resp => {
+                console.log("Joined successfully", resp)
+            })
+            .receive("error", resp => {
+                console.log("Unable to join", resp)
+            })
 
-  sendMessage(channel, message) {
-    console.log("Sending ", message)
-    this.mealChannel.push(channel, message)
-  }
+        this.mealChannel.on("html", payload => {
+            for (let key of Object.keys(payload)) {
+                console.log("Adding html", key, payload[key])
+                $(key).html(payload[key])
+            }
+        })
+    }
+
+    sendMessage(channel, message) {
+        console.log("Sending ", message)
+        this.mealChannel.push(channel, message)
+    }
 }
 
 

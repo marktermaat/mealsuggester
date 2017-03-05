@@ -5,38 +5,43 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
     alias Mealplanner.Meal
     alias Mealplanner.Repo
 
+    describe "connect" do
+        setup do
+            {token, user} = user_token()
+            {:ok, token: token, user: user}
+        end
+
+        test "returns a socket when using a correct token", %{token: token} do
+            {result, socket} = connect(UserSocket, %{"guardian_token" => "#{token}"})
+            assert result == :ok
+            refute socket == nil
+        end
+    end
+
     describe "join channel" do
         setup do
-            socket = socket("authd_socket", %{})
-            token = user_token()
-            {:ok, socket: socket, token: token}
+            {token, user} = user_token()
+            {:ok, socket} = connect(UserSocket, %{"guardian_token" => "#{token}"})
+            {:ok, socket: socket, user: user}
         end
 
-        test "returns ok", %{socket: socket, token: token} do
-            {:ok, _reply, _socket} = subscribe_and_join(socket, UserMealsChannel, "meals", %{"guardian_token" => "#{token}"})
+        test "returns ok", %{socket: socket} do
+            {:ok, _reply, _socket} = subscribe_and_join(socket, UserMealsChannel, "meals", %{})
         end
 
-        test "returns error with incorrect token", %{socket: socket} do
-            {:error, _reply} = subscribe_and_join(socket, UserMealsChannel, "meals", %{"guardian_token" => "wrong!"})
+        test "returns errro with incorrect channel", %{socket: socket} do
+            {:error, :unknown_channel} = subscribe_and_join(socket, UserMealsChannel, "incorrectchannel", %{})
         end
 
-        test "returns error without token", %{socket: socket} do
-            {:error, :authentication_required} = subscribe_and_join(socket, UserMealsChannel, "meals")
-        end
-
-        test "returns errro with incorrect channel", %{socket: socket, token: token} do
-            {:error, :unknown_channel} = subscribe_and_join(socket, UserMealsChannel, "incorrectchannel", %{"guardian_token" => "#{token}"})
-        end
-
-        test "sends html with data for meals", %{socket: socket, token: token} do
-            subscribe_and_join(socket, UserMealsChannel, "meals", %{"guardian_token" => "#{token}"})
+        test "sends html with data for meals", %{socket: socket} do
+            subscribe_and_join(socket, UserMealsChannel, "meals", %{})
             assert_push "html", %{".server-meals": _}
         end
 
-        test "sends correct meals", %{socket: socket, token: token} do
-            create_meals()
+        test "sends correct meals", %{socket: socket, user: user} do
+            create_meals(user.id)
 
-            subscribe_and_join(socket, UserMealsChannel, "meals", %{"guardian_token" => "#{token}"})
+            subscribe_and_join(socket, UserMealsChannel, "meals", %{})
             assert_push "html", %{".server-meals": data}
             assert data =~ "Pasta"
             assert data =~ "Rice"
@@ -45,9 +50,11 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
 
     describe "new_meal" do
         setup do
-            create_meals()
-            socket = authorized_channel("meals")
+            IO.puts "-"
+            {socket, user} = authorized_channel("meals")
+            create_meals(user.id)
             assert_push "html", %{".server-meals": _}
+            IO.puts "-"
 
             {:ok, socket: socket}
         end
@@ -100,10 +107,10 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
         end
     end
 
-    defp create_meals do
+    defp create_meals(user_id) do
         meals = [
-            Meal.changeset(%Meal{}, %{name: "Pasta", latest: Timex.shift(Timex.now, days: 2)}),
-            Meal.changeset(%Meal{}, %{name: "Rice", latest: Timex.shift(Timex.now, days: 1)})
+            Meal.changeset(%Meal{}, %{name: "Pasta", user_id: user_id, latest: Timex.shift(Timex.now, days: 2)}),
+            Meal.changeset(%Meal{}, %{name: "Rice", user_id: user_id, latest: Timex.shift(Timex.now, days: 1)})
         ]
 
         Enum.each(meals, &Repo.insert!(&1))

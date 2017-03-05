@@ -4,6 +4,7 @@ defmodule Mealplanner.Meal do
   schema "meals" do
     field :name, :string
     field :latest, Timex.Ecto.Date
+    belongs_to :user, Mealplanner.User
 
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule Mealplanner.Meal do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :latest])
-    |> validate_required([:name, :latest])
+    |> cast(params, [:name, :latest, :user_id])
+    |> validate_required([:name, :latest, :user_id])
   end
 end

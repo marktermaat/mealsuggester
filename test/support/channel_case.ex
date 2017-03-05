@@ -22,8 +22,9 @@ defmodule Mealplanner.ChannelCase do
 
         alias Mealplanner.Repo
         alias Mealplanner.User
-        alias Mealplanner.UserMealsChannel
 
+        alias Mealplanner.UserMealsChannel
+        alias Mealplanner.UserSocket
         import Ecto
         import Ecto.Changeset
         import Ecto.Query
@@ -35,14 +36,14 @@ defmodule Mealplanner.ChannelCase do
         def user_token() do
             user = Repo.insert!( User.registration_changeset(%User{}, %{ name: "user", email: "abc@gmail.com", password: "12345678" }) )
             {:ok, jwt, _} = Guardian.encode_and_sign(user)
-            jwt
+            {jwt, user}
         end
 
         def authorized_channel(channel) do
-            jwt = user_token()
-            {:ok, _, socket} = socket("authd_socket", %{})
-                |> subscribe_and_join( UserMealsChannel, channel, %{"guardian_token" => "#{jwt}"} )
-            socket
+            {jwt, user} = user_token()
+            {:ok, socket} = connect(UserSocket, %{"guardian_token" => "#{jwt}"})
+            {:ok, _, socket} = subscribe_and_join( socket, UserMealsChannel, channel, %{} )
+            {socket, user}
         end
         end
     end
