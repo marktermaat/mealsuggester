@@ -50,11 +50,9 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
 
     describe "new_meal" do
         setup do
-            IO.puts "-"
             {socket, user} = authorized_channel("meals")
             create_meals(user.id)
             assert_push "html", %{".server-meals": _}
-            IO.puts "-"
 
             {:ok, socket: socket}
         end
@@ -62,6 +60,7 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
         test "receives an updated list with meals", %{socket: socket} do
             push socket, "new_meal", %{name: "Lasagna", latest: to_string(Timex.today)}
             
+            assert_push "html", %{".server-alert": _}
             assert_push "html", %{".server-meals": data}
             assert data =~ "Pasta"
             assert data =~ "Rice"
@@ -70,12 +69,16 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
 
         test "receives an alert with everything whent ok", %{socket: socket} do
             push socket, "new_meal", %{name: "Lasagna", latest: to_string(Timex.today)}
+
+            assert_push "html", %{".server-meals": _}
             assert_push "html", %{".server-alert": data}
             assert data =~ "successfully"
         end
 
         test "does not send meal data when the new meal is not valid", %{socket: socket} do
             push socket, "new_meal", %{name: "Lasagna", latest: "whatsthis?"}
+
+            assert_push "html", %{".server-alert": _}
             refute_push "html", %{".server-meals": _}
         end
 
@@ -87,6 +90,8 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
 
         test "it inserts a new meal into the database", %{socket: socket} do
             push socket, "new_meal", %{name: "Lasagna", latest: to_string(Timex.today)}
+
+            assert_push "html", %{".server-meals": _}
             assert_push "html", %{".server-alert": _}
             assert Repo.aggregate(Meal, :count, :id) == 3
             assert Repo.get_by(Meal, name: "Lasagna").latest == Timex.today
@@ -94,6 +99,8 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
 
         test "it updates an existing meal if found", %{socket: socket} do
             push socket, "new_meal", %{name: "Pasta", latest: to_string(Timex.today)}
+
+            assert_push "html", %{".server-meals": _}
             assert_push "html", %{".server-alert": _}
             assert Repo.aggregate(Meal, :count, :id) == 2
             assert Repo.get_by(Meal, name: "Pasta").latest == Timex.today
@@ -101,6 +108,8 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
 
         test "it updates an existing meal if the case if different", %{socket: socket} do
             push socket, "new_meal", %{name: "pasta", latest: to_string(Timex.today)}
+
+            assert_push "html", %{".server-meals": _}
             assert_push "html", %{".server-alert": _}
             assert Repo.aggregate(Meal, :count, :id) == 2
             assert Repo.get_by(Meal, name: "pasta").latest == Timex.today
