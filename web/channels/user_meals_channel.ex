@@ -3,17 +3,15 @@ defmodule Mealplanner.UserMealsChannel do
     use Phoenix.Channel
     import Guardian.Phoenix.Socket
 
-    def join( "meals", _params, socket ) do
-        send(self(), :send_meals)
-        {:ok, socket}
-
-        # case sign_in(socket, token) do
-        #     {:ok, authed_socket, _guardian_params} ->
-        #         send(self(), :send_meals)
-        #         {:ok, authed_socket}
-        #     {:error, reason} ->
-        #         {:error, reason}
-        # end
+    def join( "meals:" <> user_id, _params, socket ) do
+        user = current_resource(socket)
+        case String.to_integer(user_id) == user.id do
+            true ->
+                send(self(), :send_meals)
+                {:ok, socket}
+            false ->
+                {:error, :unauthorized}
+        end
     end
 
     def join(_room, _params, _socket) do

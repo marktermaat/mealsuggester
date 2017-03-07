@@ -3,7 +3,7 @@ defmodule Mealplanner.UserSocket do
     import Guardian.Phoenix.Socket
 
     ## Channels
-    channel "meals", Mealplanner.UserMealsChannel
+    channel "meals:*", Mealplanner.UserMealsChannel
 
     ## Transports
     transport :websocket, Phoenix.Transports.WebSocket

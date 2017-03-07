@@ -39,9 +39,14 @@ defmodule Mealplanner.ChannelCase do
             {jwt, user}
         end
 
-        def authorized_channel(channel) do
+        def connected_socket() do
             {jwt, user} = user_token()
             {:ok, socket} = connect(UserSocket, %{"guardian_token" => "#{jwt}"})
+            {socket, user}
+        end
+
+        def authorized_channel(channel) do
+            {socket, user} = connected_socket()
             {:ok, _, socket} = subscribe_and_join( socket, UserMealsChannel, channel, %{} )
             {socket, user}
         end
