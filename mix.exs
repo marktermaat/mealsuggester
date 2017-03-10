@@ -19,7 +19,7 @@ defmodule Mealplanner.Mixfile do
   def application do
     [mod: {Mealplanner, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :timex, :timex_ecto, :comeonin]]
+                    :phoenix_ecto, :postgrex, :timex, :timex_ecto, :comeonin, :guardian]]
   end
 
   # Specifies which paths to compile per environment.
@@ -41,7 +41,8 @@ defmodule Mealplanner.Mixfile do
      {:timex, "~> 3.0"},
      {:timex_ecto, "~> 3.0"},
      {:comeonin, "~> 3.0"},
-     {:guardian, "~> 0.14"}]
+     {:guardian, "~> 0.14"},
+     {:distillery, "~> 1.1"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
