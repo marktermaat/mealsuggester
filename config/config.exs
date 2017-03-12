@@ -13,6 +13,7 @@ config :mealplanner,
 config :mealplanner, Mealplanner.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "sb5ShrWr+pFGl1sygyIWAh9o5jzwLsbQAPCaWjLKhzesujwN+IAEJy157HNFGHrU",
+  check_origin: ["//localhost", "//127.0.0.1", "//ter-maat.com", "//192.168.2.4"],
   render_errors: [view: Mealplanner.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Mealplanner.PubSub,
            adapter: Phoenix.PubSub.PG2]

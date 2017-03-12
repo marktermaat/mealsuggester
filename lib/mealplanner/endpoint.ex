@@ -3,8 +3,6 @@ defmodule Mealplanner.Endpoint do
 
   socket "/socket", Mealplanner.UserSocket
 
-  check_origin: ["//localhost", "//127.0.0.1", "//ter-maat.com", "//192.168.2.4"]
-
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
