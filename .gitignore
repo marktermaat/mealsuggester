@@ -2,9 +2,7 @@
 /cover
 /deps
 /node_modules
-/priv/static
 /data
-/rel
 /config/prod.secret.exs
 
 erl_crash.dump
