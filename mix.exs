@@ -19,7 +19,7 @@ defmodule Mealplanner.Mixfile do
   def application do
     [mod: {Mealplanner, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :timex, :timex_ecto, :comeonin, :guardian]]
+                    :phoenix_ecto, :postgrex, :timex, :timex_ecto, :comeonin, :guardian, :logger_file_backend]]
   end
 
   # Specifies which paths to compile per environment.
