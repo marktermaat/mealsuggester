@@ -4,6 +4,7 @@
 /node_modules
 /data
 /config/prod.secret.exs
+/priv/static/
 
 erl_crash.dump
 *.ez

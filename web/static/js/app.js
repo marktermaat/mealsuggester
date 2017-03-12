@@ -21,11 +21,13 @@ import "phoenix_html"
 import $ from "jquery"
 
 import Channel from "./socket"
-import {MealForm} from "./mealform"
-import {Meals} from "./meals"
+import { MealForm } from "./mealform"
+import { Meals } from "./meals"
 
 export var App = {
     init: () => {
+    },
+    initMeals: () => {
         const channel = new Channel()
         MealForm.init(channel)
         Meals.init()
