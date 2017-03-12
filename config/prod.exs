@@ -26,7 +26,7 @@ config :logger,
   backends: [{LoggerFileBackend, :error_log}]
 
 config :logger, :error_log,
-  path: "/var/apps/logs/mealtracker/production.log",
+  path: "/var/apps/mealtracker/logs/production.log",
   level: :info
 
 # ## SSL Support
@@ -68,5 +68,5 @@ config :phoenix, :serve_endpoints, true
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-import_config "/var/apps/config/mealplanner/prod.secret.exs"
+import_config "/var/apps/mealtracker/config/prod.secret.exs"
 # import_config "prod.secret.exs"

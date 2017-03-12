@@ -1,0 +1,1 @@
+ssh -t home '/var/apps/mealtracker/scripts/deploy.sh'
