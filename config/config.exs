@@ -18,9 +18,6 @@ config :mealplanner, Mealplanner.Endpoint,
   pubsub: [name: Mealplanner.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-config :logger,
-  backends: [{LoggerFileBackend, :error_log}]
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

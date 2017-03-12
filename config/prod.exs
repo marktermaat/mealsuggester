@@ -22,6 +22,9 @@ config :mealplanner, Mealplanner.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :logger,
+  backends: [{LoggerFileBackend, :error_log}]
+
 config :logger, :error_log,
   path: "/var/apps/logs/mealtracker/production.log",
   level: :info
@@ -66,3 +69,4 @@ config :phoenix, :serve_endpoints, true
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 import_config "/var/apps/config/mealplanner/prod.secret.exs"
+# import_config "prod.secret.exs"
