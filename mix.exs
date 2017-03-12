@@ -42,7 +42,8 @@ defmodule Mealplanner.Mixfile do
      {:timex_ecto, "~> 3.0"},
      {:comeonin, "~> 3.0"},
      {:guardian, "~> 0.14"},
-     {:distillery, "~> 1.1"}]
+     {:distillery, "~> 1.1"},
+     {:logger_file_backend, "~> 0.0.9"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
