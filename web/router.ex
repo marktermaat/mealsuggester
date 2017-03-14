@@ -19,19 +19,20 @@ defmodule Mealplanner.Router do
     plug Guardian.Plug.EnsureAuthenticated, handler: Mealplanner.GuardianErrorHandler
   end
 
-  scope "/mealtracker" do
-    scope "/", Mealplanner do
-      pipe_through [:browser, :with_session] # Use the default browser stack
+  scope "/", Mealplanner do
+    pipe_through [:browser, :with_session] # Use the default browser stack
 
-      resources "/sessions", SessionController, only: [:new, :create, :delete]
-      resources "/users", UserController, only: [:new, :create]
-    end
-
-    # Restricted zone
-    scope "/", Mealplanner do
-      pipe_through [:browser, :with_session, :login_required] # Use the default browser stack
-
-      get "/", MealController, :index
-    end
+    resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/users", UserController, only: [:new, :create]
   end
+
+  # Restricted zone
+  scope "/", Mealplanner do
+    pipe_through [:browser, :with_session, :login_required] # Use the default browser stack
+
+    get "/", MealController, :index
+  end
+  
+
+  
 end
