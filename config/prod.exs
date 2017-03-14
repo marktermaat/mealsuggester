@@ -13,7 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :mealplanner, Mealplanner.Endpoint,
   http: [port: System.get_env("PORT") || 4001],
-  url: [host: "localhost", port: System.get_env("PORT") || 4001],
+  url: [host: "ter-maat.com/mealtracker", port: System.get_env("PORT") || 4001],
   cache_static_manifest: "priv/static/manifest.json",
   server: true,
   root: ".",
