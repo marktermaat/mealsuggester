@@ -9,6 +9,7 @@
     <%= if Guardian.Plug.current_token(@conn) do %>
         <meta name='guardian_token' content="<%= Guardian.Plug.current_token(@conn) %>">
         <meta name='user_id' content="<%= Guardian.Plug.current_resource(@conn).id %>">
+        <meta name='base_path' content="<%= Mealplanner.Endpoint.struct_url().path %>">
     <% end %>
 
     <title>Mealplanner</title>

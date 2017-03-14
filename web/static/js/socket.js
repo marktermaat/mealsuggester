@@ -10,8 +10,9 @@ export default class Channel {
     constructor() {
         const guardianToken = $('meta[name="guardian_token"]').attr('content');
         const userId = $('meta[name="user_id"]').attr('content');
+        const basePath = $('meta[name="base_path"]').attr('content');
 
-        this.socket = new Socket("/socket", { params: { token: window.userToken, guardian_token: guardianToken } })
+        this.socket = new Socket(basePath + "/socket", { params: { token: window.userToken, guardian_token: guardianToken } })
         this.socket.connect()
 
         this.mealChannel = this.socket.channel("meals:" + userId, {})
