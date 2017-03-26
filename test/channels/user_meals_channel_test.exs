@@ -120,6 +120,49 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
         end
     end
 
+    describe "filter_meals" do
+        setup do
+            {socket, user} = connected_socket()
+            {:ok, _, socket} = subscribe_and_join( socket, UserMealsChannel, "meals:#{user.id}", %{} )
+            create_meals(user.id)
+            assert_push "html", %{".server-meals": _}
+
+            {:ok, socket: socket}
+        end
+
+        test "it returns all meals when no search terms are send", %{socket: socket} do
+            push socket, "filter_meals", ""
+            
+            assert_push "html", %{".server-meals": data}
+            assert data =~ "Pasta"
+            assert data =~ "Rice"
+        end
+
+        test "filters on a single word", %{socket: socket} do
+            push socket, "filter_meals", "as"
+            
+            assert_push "html", %{".server-meals": data}
+            assert data =~ "Pasta"
+            refute data =~ "Rice"
+        end
+
+        test "filters on multiple words", %{socket: socket} do
+            push socket, "filter_meals", "as ta"
+            
+            assert_push "html", %{".server-meals": data}
+            assert data =~ "Pasta"
+            refute data =~ "Rice"
+        end
+
+        test "filters out special characters", %{socket: socket} do
+            push socket, "filter_meals", "as.,'-_"
+            
+            assert_push "html", %{".server-meals": data}
+            assert data =~ "Pasta"
+            refute data =~ "Rice"
+        end
+    end
+
     defp create_meals(user_id) do
         meals = [
             Meal.changeset(%Meal{}, %{name: "Pasta", user_id: user_id, latest: Timex.shift(Timex.now, days: 2)}),

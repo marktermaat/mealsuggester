@@ -22,6 +22,7 @@ import $ from "jquery"
 
 import Channel from "./socket"
 import { MealForm } from "./mealform"
+import { MealFilter } from "./mealfilter"
 import { Meals } from "./meals"
 
 export var App = {
@@ -29,6 +30,7 @@ export var App = {
     },
     initMeals: () => {
         const channel = new Channel()
+        MealFilter.init(channel)
         MealForm.init(channel)
         Meals.init()
     },

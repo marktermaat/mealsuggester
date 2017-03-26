@@ -10,5 +10,9 @@
   </form>
 </div>
 
+<div>
+    <input id="mealfilter" type="text">
+</div>
+
 <div class="server-meals js-meals"></div>
 </div>

@@ -1,14 +1,7 @@
 Todo:
-- Deployment
-- Only load meal-channel on correct page
 - Snooze-button
 - New meal suggestions
-- Meal filter
+- Delete meals
 - Better error handling
 - Styling
   - Including alert screen that can be closed
-
-mix phoenix.digest
-MIX_ENV=prod mix compile
-MIX_ENV=prod mix release
-PORT=8888 _build/prod/rel/mealplanner/bin/mealplanner foreground

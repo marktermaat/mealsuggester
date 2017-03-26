@@ -32,6 +32,11 @@ defmodule Mealplanner.UserMealsChannel do
         {:noreply, socket}
     end
 
+    def handle_in( "filter_meals", input, socket ) do
+        send(self(), {:send_meals, input})
+        {:noreply, socket}
+    end
+
     def handle_info( :send_meals, socket ) do
         user = current_resource(socket)
         all_meals_query = from m in Meal, where: m.user_id == ^user.id, order_by: [asc: m.latest]
@@ -41,7 +46,32 @@ defmodule Mealplanner.UserMealsChannel do
         {:noreply, socket}
     end
 
+    def handle_info( {:send_meals, search_terms}, socket ) do
+        user = current_resource(socket)
+        terms = split_search_terms(search_terms)
+
+        all_meals_query = from m in Meal, where: m.user_id == ^user.id, order_by: [asc: m.latest]
+        all_meals_query = Enum.reduce(terms, all_meals_query, fn(term, query) -> from q in query, where: ilike(q.name, ^term) end)
+
+        meals = Repo.all(all_meals_query)
+        mealsPartial = get_template( "_meals.html", %{meals: meals} )
+        push socket, "html", %{".server-meals": mealsPartial}
+        {:noreply, socket}
+    end
+
     # ============ Private helpers ========================
+
+    defp split_search_terms( %{} ) do
+        []
+    end
+    defp split_search_terms( search_terms ) do
+        search_terms
+            |> String.split(" ")
+            |> Stream.map( fn(term) -> String.replace(term, ~r/\W/, "") end )
+            |> Stream.map( &String.downcase/1 )
+            |> Stream.map( fn(term) -> "%" <> term <> "%" end )
+            |> Enum.to_list
+    end
 
     defp get_template(name, data \\ %{}) do
         Phoenix.View.render_to_string Mealplanner.MealView, name, data
