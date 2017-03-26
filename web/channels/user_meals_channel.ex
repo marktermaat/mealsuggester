@@ -32,7 +32,7 @@ defmodule Mealplanner.UserMealsChannel do
         {:noreply, socket}
     end
 
-    def handle_in( "filter_meals", input, socket ) do
+    def handle_in( "show_meals", input, socket ) do
         send(self(), {:send_meals, input})
         {:noreply, socket}
     end

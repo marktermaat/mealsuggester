@@ -3,7 +3,7 @@ export var MealFilter = {
         const filterElement = document.getElementById('mealfilter')
         filterElement.oninput = (event) => {
             const input = event.target.value
-            channel.sendMessage("filter_meals", input)
+            channel.sendMessage("show_meals", input)
             console.log(event.target.value)
         };
     }
