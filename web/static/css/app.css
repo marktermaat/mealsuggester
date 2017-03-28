@@ -1,1 +1,17 @@
 /* This file is for your main application css. */
+.selected-meal {
+    background-color: lightgrey;
+}
+
+.meals p {
+    padding-right: 10px;
+    display: inline;
+}
+
+.show-on-select {
+    display: none;
+}
+
+.selected-meal > .show-on-select {
+    display: initial;
+}
