@@ -131,7 +131,7 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
         end
 
         test "it returns all meals when no search terms are send", %{socket: socket} do
-            push socket, "filter_meals", ""
+            push socket, "show_meals", ""
             
             assert_push "html", %{".server-meals": data}
             assert data =~ "Pasta"
@@ -139,7 +139,7 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
         end
 
         test "filters on a single word", %{socket: socket} do
-            push socket, "filter_meals", "as"
+            push socket, "show_meals", "as"
             
             assert_push "html", %{".server-meals": data}
             assert data =~ "Pasta"
@@ -147,7 +147,7 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
         end
 
         test "filters on multiple words", %{socket: socket} do
-            push socket, "filter_meals", "as ta"
+            push socket, "show_meals", "as ta"
             
             assert_push "html", %{".server-meals": data}
             assert data =~ "Pasta"
@@ -155,7 +155,7 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
         end
 
         test "filters out special characters", %{socket: socket} do
-            push socket, "filter_meals", "as.,'-_"
+            push socket, "show_meals", "as.,'-_"
             
             assert_push "html", %{".server-meals": data}
             assert data =~ "Pasta"
