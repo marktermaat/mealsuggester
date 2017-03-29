@@ -3,7 +3,7 @@ defmodule Mealplanner.MealTest do
 
   alias Mealplanner.Meal
 
-  @valid_attrs %{latest: %{day: 17, month: 4, year: 2010}, name: "some content", user_id: 1}
+  @valid_attrs %{latest: %{day: 17, month: 4, year: 2010}, name: "some content", user_id: 1, snoozed_until: %{day: 17, month: 4, year: 2010, hour: 10, minute: 10, second: 10}, snooze_counter: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
