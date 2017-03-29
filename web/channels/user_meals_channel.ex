@@ -37,6 +37,11 @@ defmodule Mealplanner.UserMealsChannel do
         {:noreply, socket}
     end
 
+    def handle_in( "snooze_meal", %{ "id" => id }, socket ) do
+        send(self(), {:snooze_meal, id})
+        {:noreply, socket}
+    end
+
     def handle_info( :send_meals, socket ) do
         user = current_resource(socket)
         all_meals_query = from m in Meal, where: m.user_id == ^user.id, order_by: [asc: m.latest]
@@ -56,6 +61,11 @@ defmodule Mealplanner.UserMealsChannel do
         meals = Repo.all(all_meals_query)
         mealsPartial = get_template( "_meals.html", %{meals: meals} )
         push socket, "html", %{".server-meals": mealsPartial}
+        {:noreply, socket}
+    end
+
+    def handle_info( {:snooze_meal, id}, socket ) do
+        IO.inspect id, label: "Snoozing ID"
         {:noreply, socket}
     end
 

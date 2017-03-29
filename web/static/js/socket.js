@@ -26,7 +26,6 @@ export default class Channel {
 
         this.mealChannel.on("html", payload => {
             for (let key of Object.keys(payload)) {
-                console.log("Adding html", key, payload[key])
                 $(key).html(payload[key])
             }
         })

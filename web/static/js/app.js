@@ -32,7 +32,7 @@ export var App = {
         const channel = new Channel()
         MealFilter.init(channel)
         MealForm.init(channel)
-        Meals.init()
+        Meals.init(channel)
     },
     clearForm: () => {
         MealForm.clearForm()
