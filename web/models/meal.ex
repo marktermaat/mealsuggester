@@ -6,17 +6,18 @@ defmodule Mealplanner.Meal do
     field :latest, Timex.Ecto.Date
     belongs_to :user, Mealplanner.User
     field :snoozed_until, Timex.Ecto.DateTime
-    field :snooze_counter, :integer, default: 0
+    field :snooze_counter, :integer
 
     timestamps()
   end
 
   @doc """
-  Builds a changeset based on the `struct` and `params`.
+  Builds a changeset to create or update a meal.
   """
-  def changeset(struct, params \\ %{}) do
+  def new_meal_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :latest, :user_id, :snoozed_until, :snooze_counter])
+    |> cast(params, [:name, :latest, :user_id])
     |> validate_required([:name, :latest, :user_id])
+    |> put_change(:snooze_counter, 0)
   end
 end

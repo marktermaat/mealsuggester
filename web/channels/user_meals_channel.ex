@@ -92,7 +92,7 @@ defmodule Mealplanner.UserMealsChannel do
             nil -> %Meal{user_id: user.id}
             meal -> meal
         end
-        |> Meal.changeset(new_meal)
+        |> Meal.new_meal_changeset(new_meal)
         |> Repo.insert_or_update
     end
 end

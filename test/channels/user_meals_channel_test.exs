@@ -165,8 +165,8 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
 
     defp create_meals(user_id) do
         meals = [
-            Meal.changeset(%Meal{}, %{name: "Pasta", user_id: user_id, latest: Timex.shift(Timex.now, days: 2)}),
-            Meal.changeset(%Meal{}, %{name: "Rice", user_id: user_id, latest: Timex.shift(Timex.now, days: 1)})
+            Meal.new_meal_changeset(%Meal{}, %{name: "Pasta", user_id: user_id, latest: Timex.shift(Timex.now, days: 2)}),
+            Meal.new_meal_changeset(%Meal{}, %{name: "Rice", user_id: user_id, latest: Timex.shift(Timex.now, days: 1)})
         ]
 
         Enum.each(meals, &Repo.insert!(&1))
