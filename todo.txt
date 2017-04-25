@@ -3,5 +3,6 @@ Todo:
 - New meal suggestions
 - Delete meals
 - Better error handling
+- Upgrade Phoenix to 1.3 (and refactor code into better modules)
 - Styling
   - Including alert screen that can be closed

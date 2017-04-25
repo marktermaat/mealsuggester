@@ -44,7 +44,7 @@ defmodule Mealplanner.UserMealsChannel do
 
     def handle_info( :send_meals, socket ) do
         user = current_resource(socket)
-        all_meals_query = from m in Meal, where: m.user_id == ^user.id, order_by: [asc: m.latest]
+        all_meals_query = Meal.by_user_id(Meal, user.id)
         meals = Repo.all(all_meals_query)
         mealsPartial = get_template( "_meals.html", %{meals: meals} )
         push socket, "html", %{".server-meals": mealsPartial}
@@ -55,7 +55,7 @@ defmodule Mealplanner.UserMealsChannel do
         user = current_resource(socket)
         terms = split_search_terms(search_terms)
 
-        all_meals_query = from m in Meal, where: m.user_id == ^user.id, order_by: [asc: m.latest]
+        all_meals_query = Meal.by_user_id(Meal, user.id)
         all_meals_query = Enum.reduce(terms, all_meals_query, fn(term, query) -> from q in query, where: ilike(q.name, ^term) end)
 
         meals = Repo.all(all_meals_query)
@@ -65,7 +65,17 @@ defmodule Mealplanner.UserMealsChannel do
     end
 
     def handle_info( {:snooze_meal, id}, socket ) do
-        IO.inspect id, label: "Snoozing ID"
+        meal = Meal
+            |> Meal.by_id(id)
+            |> Repo.one
+            # Filter by user_id too!
+        
+        snooze_counter = (meal.snooze_counter || 0) + 1
+        snooze_date = get_new_snooze_date(meal.snooze_counter)
+        changeset = Meal.update_snooze_changeset(meal, %{snooze_counter: snooze_counter, snoozed_until: snooze_date})
+        result = Repo.update(changeset)
+        
+        send(self(), :send_meals)
         {:noreply, socket}
     end
 
@@ -94,5 +104,25 @@ defmodule Mealplanner.UserMealsChannel do
         end
         |> Meal.new_meal_changeset(new_meal)
         |> Repo.insert_or_update
+    end
+
+    defp get_new_snooze_date( nil ) do
+        Timex.shift(Timex.now, days: 7)
+    end
+
+    defp get_new_snooze_date( 0 ) do
+        Timex.shift(Timex.now, days: 7)
+    end
+
+    defp get_new_snooze_date( 1 ) do
+        Timex.shift(Timex.now, days: 14)
+    end
+
+    defp get_new_snooze_date( 2 ) do
+        Timex.shift(Timex.now, days: 14)
+    end
+
+    defp get_new_snooze_date( _ ) do
+        Timex.shift(Timex.now, days: 28)
     end
 end

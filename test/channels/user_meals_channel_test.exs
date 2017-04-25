@@ -163,13 +163,41 @@ defmodule Mealplanner.Channel.UserMealsChannelTest do
         end
     end
 
+    describe "snooze_meal" do
+        setup do
+            {socket, user} = connected_socket()
+            {:ok, _, socket} = subscribe_and_join( socket, UserMealsChannel, "meals:#{user.id}", %{} )
+            meals = create_meals(user.id)
+            assert_push "html", %{".server-meals": _}
+
+            {:ok, socket: socket, meals: meals}
+        end
+
+        test "snoozes a meal", %{socket: socket, meals: meals} do
+            meal_id = List.first(meals).id
+            push socket, "snooze_meal", %{id: meal_id}
+            assert_push "html", %{".server-meals": _}
+            new_meal = Repo.one(Meal.by_id(Meal, meal_id))
+            assert new_meal.snooze_counter == 1
+            assert Timex.diff(new_meal.snoozed_until, Timex.shift(Timex.now, days: 7), :seconds) < 1
+        end
+
+        test "sends the new meal list", %{socket: socket, meals: meals} do
+            push socket, "snooze_meal", %{id: List.first(meals).id}
+
+            assert_push "html", %{".server-meals": data}
+            refute data =~ "Pasta"
+            assert data =~ "Rice"
+        end
+    end
+
     defp create_meals(user_id) do
         meals = [
             Meal.new_meal_changeset(%Meal{}, %{name: "Pasta", user_id: user_id, latest: Timex.shift(Timex.now, days: 2)}),
             Meal.new_meal_changeset(%Meal{}, %{name: "Rice", user_id: user_id, latest: Timex.shift(Timex.now, days: 1)})
         ]
 
-        Enum.each(meals, &Repo.insert!(&1))
+        Enum.map(meals, &Repo.insert!(&1))
     end
     
 end
