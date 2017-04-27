@@ -1,7 +1,6 @@
 Todo:
-- Snooze-button
-- New meal suggestions
 - Delete meals
+- Improved date selector
 - Better error handling
 - Upgrade Phoenix to 1.3 (and refactor code into better modules)
 - Styling
