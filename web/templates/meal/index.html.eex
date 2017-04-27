@@ -4,14 +4,10 @@
 
 <div class="new-meal">
   <form class="js-newmealform">
-    <input type="text" name="name" placeholder="Meal">
-    <input type="text" name="latest" placeholder="When" value="<%= Date.to_string(Date.utc_today) %>">
+    <input class="js-newmealfield" type="text" name="name" placeholder="Meal" autocomplete="off">
+    <input type="text" name="latest" placeholder="When" value="<%= Date.to_string(Date.utc_today) %>" autocomplete="off">
     <input type="submit">
   </form>
-</div>
-
-<div>
-    <input id="mealfilter" type="text">
 </div>
 
 <div class="server-meals js-meals"></div>

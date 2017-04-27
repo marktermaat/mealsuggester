@@ -11,35 +11,32 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
+import "phoenix_html";
 
 // Import local files
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import $ from "jquery"
+import $ from "jquery";
 
-import Channel from "./socket"
-import { MealForm } from "./mealform"
-import { MealFilter } from "./mealfilter"
-import { Meals } from "./meals"
+import Channel from "./socket";
+import { MealForm } from "./mealform";
+import { Meals } from "./meals";
 
 export var App = {
-    init: () => {
-    },
-    initMeals: () => {
-        const channel = new Channel()
-        MealFilter.init(channel)
-        MealForm.init(channel)
-        Meals.init(channel)
-    },
-    clearForm: () => {
-        MealForm.clearForm()
-    },
-    showNewMealErrors: (errors) => {
-        MealForm.showErrors(errors)
-    }
-}
+  init: () => {},
+  initMeals: () => {
+    const channel = new Channel();
+    MealForm.init(channel);
+    Meals.init(channel);
+  },
+  clearForm: () => {
+    MealForm.clearForm();
+  },
+  showNewMealErrors: errors => {
+    MealForm.showErrors(errors);
+  }
+};
 window.App = App;
-window.$ = $
+window.$ = $;
