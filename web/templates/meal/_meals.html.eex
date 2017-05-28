@@ -1,5 +1,5 @@
 <%= for meal <- @meals do %>
-<div class="meal js-meal" data-id="<%= meal.id %>">
+<div class="meal flex-with-wrap js-meal" data-id="<%= meal.id %>">
     <span class="meal-name flex-3 js-mealname"><%= meal.name %></span>
     <span class="meal-date flex-1 js-mealdate"> <%= meal.latest %></span>
     <span class="meal-actions">

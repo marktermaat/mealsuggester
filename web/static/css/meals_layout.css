@@ -17,27 +17,18 @@
 }
 
 /* ========== Meal list ========== */
-.meal-list {
+.meallist {
   margin-top: 1em;
-}
-
-.meal {
-  display: flex;
-  align-items: center;
-}
-
-.meal-date {
-  min-width: 6em;
 }
 
 /* ========== Meal items ========== */
 .meal {
-  display: flex;
   padding: 0.5em 0;
   position: relative;
 }
 
 .meal-date {
+  min-width: 6em;
   text-align: right;
 }
 
@@ -66,7 +57,6 @@
   float: right;
   box-sizing: border-box;
   background-color: darkgrey;
-  cursor: pointer;
 }
 
 .meal-actions-snooze img {

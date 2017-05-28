@@ -7,6 +7,6 @@
     </form>
   </div>
 
-  <div class="meal-list server-meals js-meals"></div>
+  <div class="meallist server-meals js-meals"></div>
   </div>
 </div>
