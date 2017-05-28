@@ -1,0 +1,74 @@
+/* ========== New meal forms ========== */
+.newmealform-date {
+  width: 150px;
+}
+
+.newmealform-submit {
+  width: 100px;
+}
+
+.newmealform input:last-child {
+  margin-right: 0;
+}
+
+.newmealform input {
+  margin: 0.2em;
+  margin-left: 0;
+}
+
+/* ========== Meal list ========== */
+.meal-list {
+  margin-top: 1em;
+}
+
+.meal {
+  display: flex;
+  align-items: center;
+}
+
+.meal-date {
+  min-width: 6em;
+}
+
+/* ========== Meal items ========== */
+.meal {
+  display: flex;
+  padding: 0.5em 0;
+  position: relative;
+}
+
+.meal-date {
+  text-align: right;
+}
+
+.meal-actions {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: lightgrey;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.selected-meal {
+    background-color: lightgrey;
+}
+
+.selected-meal > .meal-actions {
+  display: inline;
+  min-width: 6em;
+  width: 25%;
+  padding: 5px;
+}
+
+.meal-actions-snooze {
+  height: 100%;
+  float: right;
+  box-sizing: border-box;
+  background-color: darkgrey;
+  cursor: pointer;
+}
+
+.meal-actions-snooze img {
+  height: 100%;
+}

@@ -12,4 +12,9 @@ defmodule Mealplanner.MealView do
         ~s{<script>window.App.initMeals()</script>}
         |> raw
     end
+
+    def render("title", _assigns) do
+      "<span class='title flex-1'>My meals</span>"
+      |> raw
+    end
 end

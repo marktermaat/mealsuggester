@@ -1,14 +1,12 @@
-<h1>My meals</h1>
+<div class="my-meals"> 
+  <div class="new-meal">
+    <form class="newmealform flex-with-wrap mobile-to-column js-newmealform">
+      <input class="textfield newmealform-name flex-1 js-newmealfield" type="text" name="name" placeholder="Meal" autocomplete="off">
+      <input class="textfield newmealform-date newmealform-date" type="date" name="latest" placeholder="When" value="<%= Date.to_string(Date.utc_today) %>" autocomplete="off">
+      <input class="button newmealform-submit" type="submit">
+    </form>
+  </div>
 
-<div class="server-alert"></div>
-
-<div class="new-meal">
-  <form class="js-newmealform">
-    <input class="js-newmealfield" type="text" name="name" placeholder="Meal" autocomplete="off">
-    <input type="date" name="latest" placeholder="When" value="<%= Date.to_string(Date.utc_today) %>" autocomplete="off">
-    <input type="submit">
-  </form>
-</div>
-
-<div class="server-meals js-meals"></div>
+  <div class="meal-list server-meals js-meals"></div>
+  </div>
 </div>

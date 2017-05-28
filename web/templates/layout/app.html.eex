@@ -19,16 +19,16 @@
   <body>
     <div class="container">
       <header class="header">
+        <%= render_existing view_module(@conn), "title", assigns %>
+        <%= if @current_user do %>
+          <%= link "Sign out", to: session_path(@conn, :delete, @current_user), method: "delete", class: "logout-link flex-1" %>
+        <% end %>
       </header>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      
+      <div class="server-alert alerts"></div>
 
-      <%= if @current_user do %>
-        <%= link "Sign out", to: session_path(@conn, :delete, @current_user), method: "delete" %>
-      <% end %>
-
-      <main role="main">
+      <main class="content" role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
 

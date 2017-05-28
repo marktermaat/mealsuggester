@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 200%;
+
+}
+
+.logout-link {
+  float: right;
+}

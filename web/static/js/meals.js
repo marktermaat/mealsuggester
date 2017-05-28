@@ -1,27 +1,31 @@
-import $ from "jquery"
+import $ from "jquery";
 
 export var Meals = {
-    init: (channel) => {
-        $('.js-meals').on('click', '.js-meal', (event) => {
-            // Select clicked meal
-            $(".selected-meal").removeClass("selected-meal")
-            $(event.currentTarget).addClass("selected-meal")
+  init: channel => {
+    $(".js-meals").on("click", ".js-meal", event => {
+      // Select clicked meal
+      if ($(event.currentTarget).hasClass("selected-meal")) {
+        $(".selected-meal").removeClass("selected-meal");
+      } else {
+        $(".selected-meal").removeClass("selected-meal");
+        $(event.currentTarget).addClass("selected-meal");
 
-            // Insert meal in new meal form
-            const mealname = $(event.currentTarget).children(".js-mealname").text()
-            $(".js-newmealform input[name='name']").val(mealname)
-        });
+        // Insert meal in new meal form
+        const mealname = $(event.currentTarget).children(".js-mealname").text();
+        $(".js-newmealform input[name='name']").val(mealname);
+      }
+    });
 
-        // Remove the selection when the user clicks somewhere else
-        $(document).on('click', function (event) {
-            if (!$(event.target).closest('.js-meals').length) {
-                $(".selected-meal").removeClass("selected-meal")
-            }
-        });
+    // Remove the selection when the user clicks somewhere else
+    $(document).on("click", function(event) {
+      if (!$(event.target).closest(".js-meals").length) {
+        $(".selected-meal").removeClass("selected-meal");
+      }
+    });
 
-        $('.js-meals').on('click', '.js-mealsnooze', (event) => {
-            const id = $(event.target).parent('.js-meal').data('id')
-            channel.sendMessage('snooze_meal', { id: id })
-        });
-    },
-}
+    $(".js-meals").on("click", ".js-mealsnooze", event => {
+      const id = $(event.target).parent(".js-meal").data("id");
+      channel.sendMessage("snooze_meal", { id: id });
+    });
+  }
+};

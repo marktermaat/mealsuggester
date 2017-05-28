@@ -1,7 +1,11 @@
 <%= for meal <- @meals do %>
-<div class="meals js-meal" data-id="<%= meal.id %>">
-    <p class="js-mealname"><%= meal.name %></p>
-    <p class="js-mealdate"> <%= meal.latest %></p>
-    <span class="show-on-select js-mealsnooze">Snooze</span>
+<div class="meal js-meal" data-id="<%= meal.id %>">
+    <span class="meal-name flex-3 js-mealname"><%= meal.name %></span>
+    <span class="meal-date flex-1 js-mealdate"> <%= meal.latest %></span>
+    <span class="meal-actions">
+      <div class="meal-actions-snooze button js-mealsnooze">
+        <img class="" src="/images/icon-snooze.png" />
+      </div>
+    </span>
 </div>
 <%= end %>

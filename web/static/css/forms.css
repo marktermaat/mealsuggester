@@ -1,0 +1,13 @@
+.textfield {
+  border: none;
+  background-color: lightgrey;
+  height: 2em;
+  padding: 0.2em;
+  box-sizing: border-box;
+}
+
+.button {
+  height: 2em;
+  background-color: darkgrey;
+  border: none;
+}

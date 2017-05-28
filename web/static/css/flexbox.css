@@ -1,0 +1,22 @@
+.flex-with-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-2 {
+  flex: 2;
+}
+
+.flex-3 {
+  flex: 3;
+}
+
+@media (max-width: 600px) {
+  .mobile-to-column {
+    flex-direction: column;
+  }
+}
