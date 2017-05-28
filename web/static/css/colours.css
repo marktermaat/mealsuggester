@@ -1,0 +1,40 @@
+/*
+  main color: 76b037 => http://www.color-hex.com/color/76b037
+
+*/
+
+.header {
+  background-color: #afc8df;
+}
+
+.alerts {
+  background-color: #ebf1f7;
+}
+
+.content {
+  background-color: #ebf1f7;
+}
+
+.textfield {
+  background-color: white;
+}
+
+.button {
+  background-color: #8fc951;
+}
+
+.selected-meal {
+  background-color: #afc8df;
+}
+
+.meal-actions {
+  background-color: #afc8df;
+}
+
+.alert-success {
+  background-color: #5e91bf;
+}
+
+.alert-error {
+  background-color: red;
+}

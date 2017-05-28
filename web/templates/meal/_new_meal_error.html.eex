@@ -1,4 +1,4 @@
-<div class="alert alert.error">
+<div class="alert alert-error">
     Error adding meal.
 </div>
 

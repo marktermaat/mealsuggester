@@ -1,6 +1,6 @@
 /* ========== New meal forms ========== */
 .newmealform-date {
-  width: 150px;
+  width: 200px;
 }
 
 .newmealform-submit {
@@ -12,7 +12,7 @@
 }
 
 .newmealform input {
-  margin: 0.2em;
+  margin: 0.5em;
   margin-left: 0;
 }
 
@@ -35,14 +35,10 @@
 .meal-actions {
   display: none;
   position: absolute;
+  top: 0;
   right: 0;
-  background-color: lightgrey;
   box-sizing: border-box;
   height: 100%;
-}
-
-.selected-meal {
-    background-color: lightgrey;
 }
 
 .selected-meal > .meal-actions {
@@ -56,7 +52,6 @@
   height: 100%;
   float: right;
   box-sizing: border-box;
-  background-color: darkgrey;
 }
 
 .meal-actions-snooze img {

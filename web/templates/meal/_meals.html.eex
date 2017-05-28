@@ -4,7 +4,7 @@
     <span class="meal-date flex-1 js-mealdate"> <%= meal.latest %></span>
     <span class="meal-actions">
       <div class="meal-actions-snooze button js-mealsnooze">
-        <img class="" src="/images/icon-snooze.png" />
+        Snooze
       </div>
     </span>
 </div>

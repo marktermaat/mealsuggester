@@ -1,7 +1,7 @@
 .container {
   display: grid;
   grid-template-columns: [col1] 1fr [col2] 4fr [col3] 1fr [col3-end];
-  grid-template-rows: [row1-start] auto [row2-start] auto [row3-start] auto [row3-end];
+  grid-template-rows: [row1-start] 3em [row2-start] auto [row3-start] auto [row3-end];
   grid-gap: 0px;
 }
 
@@ -14,14 +14,11 @@
 .container .header {
   grid-column: col2;
   grid-row: row1-start;
-  background-color: lightgrey;
-  height: 3em;
 }
 
 .container .alerts {
   grid-column: col2;
   grid-row: row2-start;
-  background-color: red;
 }
 
 .container .content {

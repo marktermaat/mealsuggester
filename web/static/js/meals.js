@@ -3,6 +3,7 @@ import $ from "jquery";
 export var Meals = {
   init: channel => {
     $(".js-meals").on("click", ".js-meal", event => {
+      console.log("1");
       // Select clicked meal
       if ($(event.currentTarget).hasClass("selected-meal")) {
         $(".selected-meal").removeClass("selected-meal");
@@ -24,7 +25,10 @@ export var Meals = {
     });
 
     $(".js-meals").on("click", ".js-mealsnooze", event => {
-      const id = $(event.target).parent(".js-meal").data("id");
+      console.log("2");
+      console.log($(event.target));
+      console.log($(event.target).parents(".js-meal"));
+      const id = $(event.target).parents(".js-meal").data("id");
       channel.sendMessage("snooze_meal", { id: id });
     });
   }

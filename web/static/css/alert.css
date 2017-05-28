@@ -1,0 +1,9 @@
+.alert {
+  padding: 0.3em;
+  margin: 0.5em;
+}
+
+.alert-success {
+  color: white;
+}
+
