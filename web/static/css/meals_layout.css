@@ -23,8 +23,8 @@
 
 /* ========== Meal items ========== */
 .meal {
-  padding: 0.5em 0;
   position: relative;
+  line-height: 250%;
 }
 
 .meal-date {
