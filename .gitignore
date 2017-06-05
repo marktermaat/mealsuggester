@@ -7,7 +7,6 @@
 
 # Ignore generated statics
 /priv/static/
-!/priv/static/fonts/
 
 erl_crash.dump
 *.ez
