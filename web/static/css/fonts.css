@@ -2,12 +2,12 @@
   font-family: "Arvo";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/arvo/Arvo-Regular.ttf") format("truetype")
+  src: url("../fonts/arvo/Arvo-Regular.ttf") format("truetype")
 }
 
 @font-face {
   font-family: "Arvo-Bold";
   font-style: normal;
   font-weight: 700;
-  src: url("/fonts/arvo/Arvo-Bold.ttf") format("truetype")
+  src: url("../fonts/arvo/Arvo-Bold.ttf") format("truetype")
 }
