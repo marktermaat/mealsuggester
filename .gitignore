@@ -4,7 +4,10 @@
 /node_modules
 /data
 /config/prod.secret.exs
+
+# Ignore generated statics
 /priv/static/
+!/priv/static/fonts/
 
 erl_crash.dump
 *.ez

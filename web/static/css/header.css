@@ -1,4 +1,6 @@
 .header {
+  font-family: "Helvetica";
+  font-weight: bold;
   display: flex;
   align-items: center;
   padding: 1em;

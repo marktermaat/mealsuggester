@@ -5,6 +5,7 @@ Todo:
 - Upgrade Phoenix to 1.3 (and refactor code into better modules)
 - Styling
   - Including alert screen that can be closed
+  - Style login page
 - Searching/filtering should show snoozed meals too
   - Snoozed meals should be greyed out
   - Snoozed meals should not be able to be snoozed again
