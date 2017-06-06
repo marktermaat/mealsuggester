@@ -1,5 +1,6 @@
 Todo:
 - Delete meals
+- x days/weeks ago instead of dates
 - Improved date selector
 - Better error handling
 - Upgrade Phoenix to 1.3 (and refactor code into better modules)

@@ -1,6 +1,7 @@
 .header {
   font-family: "Helvetica";
   font-weight: bold;
+  color: white;
   display: flex;
   align-items: center;
   padding: 1em;
@@ -8,10 +9,13 @@
 }
 
 .title {
-  font-size: 200%;
+  font-size: 1.9em;
 
 }
 
 .logout-link {
   float: right;
+  color: white;
+  font-size: 0.8em;
+  text-decoration: none;
 }

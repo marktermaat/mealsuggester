@@ -1,12 +1,13 @@
 .textfield {
+  font-family: "Arvo";
   border: none;
-  height: 2em;
+  line-height: 2em;
   padding-left: 0.2em;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
 }
 
 .button {
-  height: 2em;
+  line-height: 2em;
   border: none;
   cursor: pointer;
   display: flex;
